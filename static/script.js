@@ -300,18 +300,33 @@ async function submitExam() {
 function showResults(data) {
     switchScreen('result');
 
+    // Questions Correct Count
     const tScore = document.getElementById('total-score');
-    if (tScore) tScore.textContent = data.totalScore;
+    if (tScore) tScore.textContent = data.correctCount;
 
     const mScore = document.getElementById('max-score');
-    if (mScore) mScore.textContent = data.maxScore;
+    if (mScore) mScore.textContent = data.totalQuestions;
+
+    // Net Score (+4/-1)
+    const netVal = document.getElementById('net-score-val');
+    if (netVal) netVal.textContent = data.netScore;
+
+    const maxPoss = document.getElementById('max-possible-score');
+    if (maxPoss) maxPoss.textContent = data.maxPossibleScore;
+
+    // New Stats
+    const stAns = document.getElementById('stats-answered');
+    if (stAns) stAns.textContent = data.countAnswered;
+
+    const stMis = document.getElementById('stats-missed');
+    if (stMis) stMis.textContent = data.countMissed;
 
     // Update PDF Date/Score
     const pdfDate = document.getElementById('pdf-date');
     if (pdfDate) pdfDate.textContent = new Date().toLocaleString();
 
     const pdfScore = document.getElementById('pdf-score');
-    if (pdfScore) pdfScore.textContent = `${data.totalScore} / ${data.maxScore}`;
+    if (pdfScore) pdfScore.textContent = `${data.correctCount}/${data.totalQuestions} Correct | Net Score: ${data.netScore} / ${data.maxPossibleScore}`;
 
     // Statistics
     const grid = document.getElementById('analytics-grid');
@@ -328,7 +343,7 @@ function showResults(data) {
             card.innerHTML = `
                 <h4>${sec.name}</h4>
                 <div class="val">${sec.correct}/${sec.total} <span style="font-size:0.5em; color:var(--text-muted)">(${accuracy}%)</span></div>
-                <div class="sub">Total Time: ${(sec.timeTaken / 60).toFixed(1)} min</div>
+                <div class="sub">Points: <span style="color:${sec.score >= 0 ? 'var(--status-answer)' : 'var(--status-not-answer)'}">${sec.score > 0 ? '+' : ''}${sec.score}</span></div>
                 <div class="sub">Avg Time/Q: ${avgTime}s</div>
             `;
             grid.appendChild(card);

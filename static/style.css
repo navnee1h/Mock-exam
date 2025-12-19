@@ -66,7 +66,7 @@ body {
     border-radius: 16px;
     padding: 3rem;
     box-shadow: var(--shadow-md);
-    text-align: center;
+    text-align: left;
     max-width: 500px;
     width: 90%;
 }
@@ -474,6 +474,24 @@ p {
     min-width: 200px;
 }
 
+/* Styled Input */
+.admin-controls input {
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.admin-controls input:focus {
+    border-color: var(--primary);
+    background: white;
+}
+
 .control-group label {
     font-size: 0.8rem;
     font-weight: 600;
@@ -547,7 +565,23 @@ p {
     flex-direction: column;
     max-height: 100%;
     overflow-y: auto;
-    padding-right: 0.5rem;
+
+    /* Centered Alignment */
+    align-items: center;
+    text-align: center;
+}
+
+/* Ensure grid items/cards inside sidebar align content properly if needed, but sidebar container is centered */
+.analytics-stack {
+    width: 100%;
+}
+
+.score-display {
+    width: 100%;
+}
+
+.action-buttons {
+    width: 100%;
 }
 
 /* Make Review Area Full Width & Responsive */

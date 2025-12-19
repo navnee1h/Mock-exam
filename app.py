@@ -138,67 +138,82 @@ def get_exam_config():
 @app.route('/api/submit', methods=['POST'])
 def submit_exam():
     data = request.json
-    user_responses = data.get('responses', {}) 
-    time_log = data.get('timeLog', {}) 
+    user_responses = data.get('responses', {})
+    time_log = data.get('timeLog', {})
     
-    all_sections = parse_markdown_questions(QUESTION_FILE)
+    all_sections = parse_markdown_questions(QUESTION_FILE) # Renamed from 'config' to 'all_sections' for clarity
     
-    analytics = {
-        "totalScore": 0,
-        "maxScore": 0,
-        "sections": [],
-        "questionAnalysis": [] 
-    }
+    section_stats = {}
+    total_correct = 0
+    total_questions = 0
+    net_score = 0
     
+    question_analysis = []
+    
+    # Initialize stats for each section
     for sec in all_sections:
-        sec_stats = {
-            "name": sec["name"],
-            "correct": 0,
-            "incorrect": 0,
-            "unanswered": 0,
-            "total": len(sec["questions"]),
-            "timeTaken": 0,
-            "avgTime": 0
+        section_stats[sec['name']] = {
+            'name': sec['name'],
+            'total': 0,
+            'correct': 0,
+            'timeTaken': 0,
+            'score': 0
         }
         
-        for q in sec["questions"]:
-            qid = str(q["id"])
-            user_ans_id = user_responses.get(qid)
-            time_spent = time_log.get(qid, 0)
+    total_answered = 0
+    
+    for sec in all_sections:
+        for q in sec['questions']:
+            q_id = str(q['id']) 
+            user_ans = user_responses.get(q_id)
+            correct_ans = q['correct'] 
+            time_spent = time_log.get(q_id, 0)
             
-            sec_stats["timeTaken"] += time_spent
+            is_correct = (user_ans == correct_ans)
+            status = 'unanswered'
             
-            status = "unanswered"
-            if user_ans_id:
-                if user_ans_id == q["correct"]:
-                    sec_stats["correct"] += 1
-                    analytics["totalScore"] += 1 
-                    status = "correct"
+            # Scoring Logic: +4 Correct, -1 Incorrect, 0 Unanswered
+            points = 0
+            if user_ans:
+                total_answered += 1
+                if is_correct:
+                    points = 4
+                    status = 'correct'
+                    total_correct += 1
+                    section_stats[sec['name']]['correct'] += 1
                 else:
-                    sec_stats["incorrect"] += 1
-                    status = "incorrect"
-            else:
-                sec_stats["unanswered"] += 1
-                
-            # Full detail for Review Mode
-            analytics["questionAnalysis"].append({
-                "id": q["id"],
-                "section": sec["name"],
-                "text": q["text"],
-                "options": q["options"],
-                "userAnswer": user_ans_id,
-                "correctAnswer": q["correct"], # Send correct answer now
-                "timeSpent": time_spent,
-                "status": status
+                    points = -1
+                    status = 'incorrect'
+            
+            section_stats[sec['name']]['total'] += 1
+            section_stats[sec['name']]['timeTaken'] += time_spent
+            section_stats[sec['name']]['score'] += points
+            
+            net_score += points
+            total_questions += 1
+            
+            question_analysis.append({
+                'id': q['id'],
+                'section': sec['name'],
+                'text': q['text'],
+                'options': [{'id': o['id'], 'text': o['text']} for o in q['options']],
+                'userAnswer': user_ans,
+                'correctAnswer': correct_ans,
+                'timeSpent': time_spent,
+                'status': status,
+                'points': points
             })
-                
-        if sec_stats["total"] > 0:
-            sec_stats["avgTime"] = sec_stats["timeTaken"] / sec_stats["total"]
-        
-        analytics["maxScore"] += sec_stats["total"]
-        analytics["sections"].append(sec_stats)
-        
-    return jsonify(analytics)
+
+    return jsonify({
+        'correctCount': total_correct,
+        'totalQuestions': total_questions,
+        'countAnswered': total_answered,
+        'countMissed': total_questions - total_answered,
+        'netScore': net_score,
+        'maxPossibleScore': total_questions * 4,
+        'sections': list(section_stats.values()),
+        'questionAnalysis': question_analysis
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -17,10 +17,13 @@
     <div id="app">
         <!-- Landing Screen -->
         <div id="start-screen" class="screen active">
-            <div class="glass-card center-content">
-                <h1>Mock Exam Platform</h1>
-                <p>Welcome to your personal testing arena.</p>
-                <button id="admin-panel-btn" class="btn secondary mb-1">Open Admin Dashboard</button>
+            <div class="center-content">
+                <h1>Crack CUET PG!</h1>
+                <p>"Success is not final, failure is not fatal: It is the courage to continue that counts."</p>
+                <div class="landing-actions">
+                    <button id="admin-panel-btn" class="btn secondary mb-1">Open Admin Dashboard</button>
+                    <!-- <button id="start-btn" class="btn primary">Start Mock Exam</button> -->
+                </div>
             </div>
         </div>
 
@@ -111,7 +114,24 @@
                     <h2>Analytics</h2>
                     <div class="score-display">
                         <div class="big-score"><span id="total-score">0</span> / <span id="max-score">0</span></div>
-                        <div class="accuracy-label">Total Score</div>
+                        <div class="accuracy-label">Questions Correct</div>
+
+                        <div class="net-score-box mt-2">
+                            Net Score: <span id="net-score-val" class="highlight-val">0</span> <span
+                                class="text-sm text-muted">/ <span id="max-possible-score">0</span></span>
+                        </div>
+
+                        <!-- Extra Stats -->
+                        <div class="info-grid mt-2" style="font-size: 0.9rem; margin-bottom: 0.5rem; gap: 0.5rem;">
+                            <div class="info-item" style="padding: 0.5rem;">
+                                <span class="label">Answered</span>
+                                <span class="value" id="stats-answered">0</span>
+                            </div>
+                            <div class="info-item" style="padding: 0.5rem;">
+                                <span class="label">Missed</span>
+                                <span class="value" id="stats-missed" style="color: var(--status-not-answer);">0</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="analytics-grid" class="analytics-stack"></div>
