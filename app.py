@@ -39,11 +39,11 @@ def parse_markdown_questions(filepath):
     global_question_id = 1
 
     for line in lines:
-        line = line.strip()
-        if not line:
+        stripped_line = line.strip()
+        if not stripped_line:
             continue
 
-        if line.startswith('# '):
+        if stripped_line.startswith('# '):
             # New Section
             if current_section:
                 if current_question: 
@@ -52,11 +52,11 @@ def parse_markdown_questions(filepath):
                 sections.append(current_section)
             
             current_section = {
-                "name": line[2:].strip(),
+                "name": stripped_line[2:].strip(),
                 "questions": []
             }
         
-        elif line.startswith('## '):
+        elif stripped_line.startswith('## '):
             # New Question
             if current_question:
                 current_section['questions'].append(current_question)
@@ -67,17 +67,17 @@ def parse_markdown_questions(filepath):
 
             current_question = {
                 "id": global_question_id,
-                "text": line[3:].strip(),
+                "text": stripped_line[3:].strip(),
                 "options": [],
                 "correct": None
             }
             global_question_id += 1
         
-        elif line.startswith('- ['):
+        elif stripped_line.startswith('- ['):
             # Option
             # Format: - [x] Correct or - [ ] Wrong
-            is_correct = line.startswith('- [x]') or line.startswith('- [X]')
-            option_text = line[5:].strip()
+            is_correct = stripped_line.startswith('- [x]') or stripped_line.startswith('- [X]')
+            option_text = stripped_line[5:].strip()
             
             # Generate option ID (A, B, C...)
             if current_question:
@@ -91,6 +91,14 @@ def parse_markdown_questions(filepath):
                 
                 if is_correct:
                     current_question['correct'] = opt_id
+
+        else:
+            # Maybe continuation of question text?
+            # If we represent newlines, we should probably append them.
+            # Only append if we are inside a question and have NO options yet.
+            if current_question and not current_question['options']:
+                # Append with newline to preserve structure
+                current_question['text'] += "\n" + stripped_line
 
     # Append trailing items
     if current_question and current_section:

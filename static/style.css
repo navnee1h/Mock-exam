@@ -277,6 +277,7 @@ p {
     line-height: 1.6;
     margin-bottom: 2rem;
     font-weight: 500;
+    white-space: pre-wrap;
 }
 
 .options-grid {

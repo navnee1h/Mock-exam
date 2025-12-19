@@ -204,6 +204,7 @@ function loadQuestion(index) {
         pItem.classList.add('current');
         pItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+    typesetMath();
 }
 
 function selectOption(qId, optId) {
@@ -384,6 +385,7 @@ function renderReviewList(questions) {
         `;
         list.appendChild(item);
     });
+    typesetMath();
 }
 
 // Admin Display
@@ -429,4 +431,10 @@ function downloadPDF() {
         if (header) header.style.display = 'none';
         element.classList.remove('pdf-mode');
     });
+}
+
+function typesetMath() {
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
 }

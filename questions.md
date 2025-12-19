@@ -95,3 +95,39 @@
 - [ ] Windows
 - [ ] Linux
 - [ ] Google
+
+---
+
+# Logical Reasoning
+
+## One term in the given number series is wrong. Find the wrong term.
+3, 10, 27, 4, 16, 64, 5, 25, 125
+- [ ] 3
+- [ ] 10
+- [x] 4
+- [ ] 27
+
+---
+
+# Mathematics
+
+## Solve for x in the quadratic equation:
+$$x^2 - 5x + 6 = 0$$
+- [x] $$x = 2, 3$$
+- [ ] $$x = -2, -3$$
+- [ ] $$x = 1, 6$$
+- [ ] $$x = -1, -6$$
+
+## Calculate the integral:
+$$\int_{0}^{\pi} \sin(x) dx$$
+- [x] 2
+- [ ] 0
+- [ ] $$\pi$$
+- [ ] 1
+
+## Is the following matrix invertible?
+$$A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$$
+- [x] Yes
+- [ ] No
+- [ ] Only if x > 0
+- [ ] Not enough information
