@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Mock Exam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Landing Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="glass-card center-content">
+                <h1>Mock Exam Platform</h1>
+                <p>Welcome to your personal testing arena.</p>
+                <button id="admin-panel-btn" class="btn secondary mb-1">Open Admin Dashboard</button>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-screen" class="screen">
+            <div class="admin-layout">
+                <header class="admin-header">
+                    <h2>Admin Dashboard</h2>
+                    <button id="back-home-btn" class="btn text">Back</button>
+                </header>
+
+                <div class="admin-controls glass-card">
+                    <div class="control-group">
+                        <label>Exam Duration (Minutes)</label>
+                        <input type="number" id="admin-duration" value="30">
+                    </div>
+                    <div class="control-group">
+                        <label>Total Questions</label>
+                        <span id="admin-total-q" class="val-display">0</span>
+                    </div>
+                    <button id="start-exam-admin-btn" class="btn primary">Start Exam with Settings</button>
+                </div>
+
+                <div class="qt-list-container">
+                    <h3>Question Preview</h3>
+                    <div id="admin-q-list" class="question-list-view">
+                        <!-- Questions populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Screen -->
+        <div id="exam-screen" class="screen">
+            <header class="exam-header">
+                <div class="logo">Mock<b>Exam</b></div>
+                <div class="timer-container">
+                    <span class="label">Time Left</span>
+                    <div class="timer" id="timer">00:00:00</div>
+                </div>
+            </header>
+
+            <div class="exam-layout">
+                <!-- Main Question Area -->
+                <main class="question-area">
+                    <div class="question-header simple-boundary">
+                        <span id="question-number">Q1</span>
+                        <div class="mark-toggle">
+                            <input type="checkbox" id="mark-review-check">
+                            <label for="mark-review-check">Mark for Review</label>
+                        </div>
+                    </div>
+
+                    <div class="question-content">
+                        <p id="q-text" class="q-text">Loading...</p>
+                        <div id="options-container" class="options-grid"></div>
+                    </div>
+
+                    <div class="exam-footer">
+                        <button id="prev-btn" class="btn secondary">Previous</button>
+                        <button id="clear-btn" class="btn text">Clear</button>
+                        <button id="next-btn" class="btn primary">Next</button>
+                    </div>
+                </main>
+
+                <!-- Sidebar Palette -->
+                <aside class="sidebar simplified">
+                    <div class="palette-grid-wrapper" id="palette-container">
+                        <!-- Flattened grid -->
+                    </div>
+
+                    <div class="palette-legend compact">
+                        <span class="dot answer"></span> Ans
+                        <span class="dot mark"></span> Mark
+                        <span class="dot not-visit"></span> N/V
+                    </div>
+
+                    <button id="submit-btn" class="btn danger full-width">Submit Exam</button>
+                </aside>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-layout">
+                <!-- Sidebar: Stats -->
+                <aside class="result-sidebar glass-card">
+                    <h2>Analytics</h2>
+                    <div class="score-display">
+                        <div class="big-score"><span id="total-score">0</span> / <span id="max-score">0</span></div>
+                        <div class="accuracy-label">Total Score</div>
+                    </div>
+
+                    <div id="analytics-grid" class="analytics-stack"></div>
+
+                    <div class="action-buttons">
+                        <button id="download-pdf-btn" class="btn primary full-width">Download PDF</button>
+                        <button onclick="location.reload()" class="btn secondary full-width">New Exam</button>
+                    </div>
+                </aside>
+
+                <!-- Main: Detailed Review -->
+                <main class="review-area glass-card" id="pdf-content-area">
+                    <div class="pdf-header" style="display:none;">
+                        <h1>Exam Result Report</h1>
+                        <p>Date: <span id="pdf-date"></span></p>
+                        <p>Score: <span id="pdf-score"></span></p>
+                    </div>
+
+                    <h3>Detailed Solutions</h3>
+                    <div id="review-list" class="review-list">
+                        <!-- Detailed Qs populated here for review -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
